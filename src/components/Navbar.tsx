@@ -15,14 +15,19 @@ export default function Navbar() {
 
         <ul class="flex gap-4 items-center">
             
-                <a class="flex" href="#">
-                    <HoverEffect color="text-yellow-500">
-                    <div class="w-6 h-6 block"><BookmarkIcon /></div>
-                    </HoverEffect>
-                    <HoverEffect color="text-yellow-500">Bookmarks</HoverEffect></a>
+            <a class="flex" href="/bookmarks">
+              <HoverEffect color="text-yellow-500">
+                <div class="w-6 h-6 block">
+                  <BookmarkIcon />
+                </div>
+              </HoverEffect>
+              <HoverEffect color="text-yellow-500">Bookmarks</HoverEffect>
+            </a>
+            
             <HoverEffect>
                 <a href="#" class="w-6 h-6 block"><GitHubIcon /></a>
             </HoverEffect>
+
             <ThemeButton />
         </ul>
 

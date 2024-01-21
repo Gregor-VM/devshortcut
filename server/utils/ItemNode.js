@@ -3,14 +3,15 @@ import { getPath, getStructure } from "./utils.js";
 
 export class ItemNode {
 
-    constructor(item, dir, parent, includeContent){
+    constructor(item, dir, parent, type){
 
         this.item = item;
-        this.structure = {};
+        this.structure = null;
         this.path = `${dir}/${item}`;
         this.modified = false;
-        this.parent = parent || {};
-        this.includeContent = includeContent || false;
+        this.parent = parent || null;
+        this.type = type || false;
+        this.fileContent = "";
         
     }
 
@@ -19,8 +20,8 @@ export class ItemNode {
 
         await this.getItemNodePath();
         await this.shouldBeMarkAsDirectory();
-        this.shouldBeMarkAsModified();  
-        if(this.includeContent) await this.getContent();
+        this.shouldBeMarkAsModified();
+        this.setFileContent();
 
     }
 
@@ -34,11 +35,14 @@ export class ItemNode {
         this.isDirectory = stats.isDirectory();
     }
 
-    async getContent(){
+    setFileContent(){
 
-        if(!this.isDirectory){
-            const content = await fs.readFile(this.itemPath, {encoding: "utf-8"});
-            this.content = content.toString();
+        if(this.type === "local") {
+            this.fileContent = `/examples?path=${this.path}`;
+        }
+
+        if(this.type === "github") {
+            this.fileContent = `/github/file?filePath=${this.path}&repoUrl=`;
         }
 
     }
@@ -52,7 +56,7 @@ export class ItemNode {
             this.item = this.item.replace("!", "");
         }
 
-        if(this.parent.isDirectory && this.parent.modified){
+        if(this.parent?.isDirectory && this.parent?.modified){
             this.modified = true;
         }
     }
@@ -60,7 +64,8 @@ export class ItemNode {
     async getNextStructure(){
 
         if(this.isDirectory){
-            this.structure = await getStructure(this.path, this, this.includeContent);
+            this.structure = await getStructure(this.path, this, this.type);
+            this.structure.sort((item) => item.isDirectory ? -1 : 2);
         }
 
     }

@@ -6,6 +6,7 @@ import useSearchExample from "../hooks/useSearchExamples";
 import { Examples } from "../components/Examples";
 import FilterBadges from "../components/FilterBadges";
 import NotFound from "../components/NotFound";
+import { route } from "preact-router";
 
 
 export default function Home() {
@@ -17,6 +18,10 @@ export default function Home() {
   const onInput = (e: JSXInternal.InputEventHandler<HTMLInputElement>) => {
 
     if(state.search) state.search.value = e.target.value;
+
+    if(e.target.value.includes("https://github.com/")){
+      route("/github-viewer")
+    }
 
   }
 
@@ -33,7 +38,7 @@ export default function Home() {
         hover:shadow-xl
         focus:shadow-lg
         focus:ring-2
-        transition-all" onInput={onInput} value={state.search} placeholder="Search an example..." />
+        transition-all" onInput={onInput} value={state.search} placeholder="Search an example or paste github repo..." />
 
         <FilterBadges />
 

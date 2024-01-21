@@ -1,6 +1,8 @@
 import { useContext } from "preact/hooks";
 import { AppState } from "../state/search";
 import { Example } from "../examples/examples";
+import { route } from "preact-router";
+import { convertToSlug } from "../utils/utils";
 
 export function Examples() {
 
@@ -9,6 +11,8 @@ export function Examples() {
     const examples = state.examples;
 
     const goToExample = (example: Example) => {
+        state.selectedExample.value = example;
+        route(`/example/${convertToSlug(example.title)}`);
         return null;
     }
 

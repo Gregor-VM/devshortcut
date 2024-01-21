@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { URL } from 'url';
 import { ItemNode } from './ItemNode.js';
+import axios from 'axios';
 
 const __dirname = new URL('../', import.meta.url).pathname.replace("/", "");
 
@@ -20,37 +21,13 @@ export const getPath = async (dir) => {
   
 }
 
-
-
-/**
- * Get all directories of an example directory
- * @param {string} path - The relative path in the "examples" folder
- * @returns {Promise<string[]>} - A promise that resolves to an array of file names.
- */
-export const getDirectories = async (path) => {
-
-    const fullPath = await getPath(path);
-  
-    const directories = await fs.readdir(fullPath);
-  
-    if(directories) {
-  
-        return directories;
-  
-    } else {
-        throw new Error({msg: "File directory doesn't exists", code: 404});
-    }
-
-}
-
-
 /**
  * Get all directories and files (tabs) of a folder
  * @param {string} path - The relative path in the "examples" folder
  * @param {ItemNode} [parent] - Object representing the parent of the current file or directory
  * @returns {Promise<ItemNode>} - An object representing the structure of the folder
  */
-export const getStructure = async (path, parent, includeContent = false) => {
+export const getStructure = async (path, parent, type = "local") => {
 
     const fullPath = await getPath(`${path}`);
   
@@ -59,7 +36,7 @@ export const getStructure = async (path, parent, includeContent = false) => {
     const content = await Promise.all(
         items.map(async (item) => {
 
-          const itemNode = new ItemNode(item, path, parent, includeContent);
+          const itemNode = new ItemNode(item, path, parent, type);
 
           await itemNode.loadItem();
 
@@ -69,6 +46,8 @@ export const getStructure = async (path, parent, includeContent = false) => {
 
         })
     );
+
+    content.sort((item) => item.isDirectory ? -1 : 2);
   
     if(content) {
   
@@ -83,20 +62,51 @@ export const getStructure = async (path, parent, includeContent = false) => {
 /**
  * Get file content
  * @param {string} path - The relative path in the "examples" folder
- * @returns {Promise<string>} - The content of the file in utf-8 encoding
+ * @returns {Promise<Buffer>} - The content of the file
  */
 export const getFileContent = async (path) => {
+
+    if(path.includes("..")) throw new Error({code: 500});
 
     const fullPath = await getPath(path);
 
     try {
-        const content = await fs.readFile(fullPath, {encoding: "utf-8"});
-        return content.toString();
+        const content = await fs.readFile(fullPath);
+        return JSON.stringify(content);
     } catch (error) {
         throw new Error({msg: "File not found", code: 404});
     }
 
 }
+
+
+
+/**
+ * Get file content from GitHub
+ * @param {string} repoUrl - The github repository
+ * * @param {string} filePath - The path of the file in local
+ * @returns {Promise<Buffer>} - The content of the file
+ */
+export const getGitHubFile = async (repoUrl, filePath) => {
+
+    let repoPath = repoUrl.replace("https://github.com/", "");
+    repoPath = repoPath.split("/")[0] + "/" + repoPath.split("/")[1];
+
+    //remove tmp folder of filePath
+    const slash = filePath.indexOf("/");
+    const fileRepoPath = filePath.slice(slash + 1);
+
+    try {
+        const res = await axios.get(`https://raw.githubusercontent.com/${repoPath}/main/${fileRepoPath}`, {responseType: 'arraybuffer'});
+        const buffer = Buffer.from(res.data, 'binary');
+        return JSON.stringify(buffer);
+
+    } catch (error) {
+        throw new Error({msg: "File not found", code: 404});
+    }
+
+}
+
 
 
 
@@ -117,7 +127,9 @@ export const getGitHubRepo = async (repoUrl) => {
         
         await git.clone(repoUrl, path);
 
-        const content = await getStructure(id, undefined, true);
+        await fs.rm(await getPath(id + '/.git'), {recursive: true});
+
+        const content = await getStructure(id, undefined, "github");
 
         await fs.rm(path, {recursive: true});
 

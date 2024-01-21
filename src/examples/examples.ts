@@ -1,12 +1,19 @@
 import tags from "../utils/tags";
+import { GithubExample, LocalExample } from "../utils/utils";
 
 const customTags = {
 
 }
 
+// Note: Each title will be unique
+
 const examples = [
     {
-        title: 'Redux',
+        title: 'Redux Example',
+        tabs: [
+            LocalExample('react'),
+            LocalExample('flutter'),
+        ],
         folder: 'redux',
         content: null,
         tags: [tags.react, tags.storeManagament, tags.flutter, tags.typescript, tags.javascript],
@@ -14,9 +21,9 @@ const examples = [
     },
     {
         title: 'Sorting',
-        folder: 'sorting',
-        tabs: ['javascript'],
-        github: ['https://github.com/the-road-to-learn-react/react-redux-example'],
+        tabs: [
+            GithubExample('JavaScript', 'https://github.com/Gregor-VM/react-clicker-game'),
+        ],
         tags: [tags.react, tags.flutter, tags.typescript, tags.javascript]
     },
 ];

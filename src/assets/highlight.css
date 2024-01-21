@@ -1,0 +1,199 @@
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em
+  }
+  code.hljs {
+    padding: 3px 5px
+  }
+
+  
+
+    /*
+
+    Lightfair style (c) Tristian Kelly <tristian.kelly560@gmail.com>
+
+    */
+    
+  .hljs-name {
+    color: #01a3a3
+  }
+  .hljs-tag,
+  .hljs-meta {
+    color: #778899
+  }
+
+  .hljs-comment {
+    color: #888888
+  }
+
+  .hljs-keyword,
+  .hljs-attribute,
+  .hljs-selector-tag,
+  .hljs-meta .hljs-keyword,
+  .hljs-doctag,
+  .hljs-name {
+    font-weight: bold
+  }
+  .hljs-type,
+  .hljs-string,
+  .hljs-number,
+  .hljs-selector-id,
+  .hljs-selector-class,
+  .hljs-quote,
+  .hljs-template-tag,
+  .hljs-deletion {
+    color: #4286f4
+  }
+  .hljs-title,
+  .hljs-section {
+    color: #4286f4;
+    font-weight: bold
+  }
+  .hljs-regexp,
+  .hljs-symbol,
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-link,
+  .hljs-selector-attr,
+  .hljs-selector-pseudo {
+    color: #BC6060
+  }
+
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-number,
+  .hljs-literal,
+  .hljs-type,
+  .hljs-params,
+  .hljs-link {
+    color: #BC6060
+  }
+  
+  .hljs-literal {
+    color: #62bcbc
+  }
+  .hljs-built_in,
+  .hljs-bullet,
+  .hljs-code,
+  .hljs-addition {
+    color: #25c6c6
+  }
+  .hljs-meta .hljs-string {
+    color: #4d99bf
+  }
+  
+
+
+
+  
+
+
+
+
+  /*!
+    Theme: Tokyo-night-Dark
+    origin: https://github.com/enkia/tokyo-night-vscode-theme
+    Description: Original highlight.js style
+    Author: (c) Henri Vandersleyen <hvandersleyen@gmail.com>
+    License: see project LICENSE
+    Touched: 2022
+  */
+  /*  Comment */
+  .dark .hljs-meta,
+  .dark .hljs-comment {
+    color: #565f89
+  }
+  /* Red */
+  /*INFO: This keyword, HTML elements, Regex group symbol, CSS units, Terminal Red */
+  .dark .hljs-tag,
+  .dark .hljs-doctag,
+  .dark .hljs-selector-id,
+  .dark .hljs-selector-class,
+  .dark .hljs-regexp,
+  .dark .hljs-template-tag,
+  .dark .hljs-selector-pseudo,
+  .dark .hljs-selector-attr,
+  .dark .hljs-variable.language_,
+  .dark .hljs-deletion {
+    color: #f7768e
+  }
+  /*Orange */
+  /*INFO: Number and Boolean constants, Language support constants */
+  .dark .hljs-variable,
+  .dark .hljs-template-variable,
+  .dark .hljs-number,
+  .dark .hljs-literal,
+  .dark .hljs-type,
+  .dark .hljs-params,
+  .dark .hljs-link {
+    color: #ff9e64
+  }
+  /*  Yellow */
+  /* INFO:  	Function parameters, Regex character sets, Terminal Yellow */
+  .dark .hljs-built_in,
+  .dark .hljs-attribute {
+    color: #e0af68
+  }
+  /* cyan */
+  /* INFO: Language support functions, CSS HTML elements */
+  .dark .hljs-selector-tag {
+    color: #2ac3de
+  }
+  /* light blue */
+  /* INFO: Object properties, Regex quantifiers and flags, Markdown headings, Terminal Cyan, Markdown code, Import/export keywords */
+  .dark .hljs-keyword,
+  .dark .hljs-title.function_,
+  .dark .hljs-title,
+  .dark .hljs-title.class_,
+  .dark .hljs-title.class_.inherited__,
+  .dark .hljs-subst,
+  .dark .hljs-property {
+    color: #7dcfff
+  }
+  /*Green*/
+  /* INFO: Object literal keys, Markdown links, Terminal Green */
+  .dark .hljs-selector-tag {
+    color: #73daca
+  }
+  /*Green(er) */
+  /* INFO: Strings, CSS class names */
+  .dark .hljs-quote,
+  .dark .hljs-string,
+  .dark .hljs-symbol,
+  .dark .hljs-bullet,
+  .dark .hljs-addition {
+    color: #9ece6a
+  }
+  /* Blue */
+  /* INFO:  	Function names, CSS property names, Terminal Blue */
+  .dark .hljs-code,
+  .dark .hljs-formula,
+  .dark .hljs-section {
+    color: #7aa2f7
+  }
+  /* Magenta */
+  /*INFO: Control Keywords, Storage Types, Regex symbols and operators, HTML Attributes, Terminal Magenta */
+  .dark .hljs-name,
+  .dark .hljs-keyword,
+  .dark .hljs-operator,
+  .dark .hljs-keyword,
+  .dark .hljs-char.escape_,
+  .dark .hljs-attr {
+    color: #bb9af7
+  }
+  /* white*/
+  /* INFO: Variables, Class names, Terminal White */
+  .dark .hljs-punctuation {
+    color: #c0caf5
+  }
+  /*.dark .hljs {
+    background: #1a1b26;
+    color: #9aa5ce
+  }*/
+  .dark .hljs-emphasis {
+    font-style: italic
+  }
+  .dark .hljs-strong {
+    font-weight: bold
+  }
