@@ -9,11 +9,11 @@ const initialState = {} as {
     search?: Signal<string>;
     filters?: Signal<Tag[] | never[]>;
     toString?: ReadonlySignal<string>;
-    examples: Signal<Examples>;
+    examples: Signal<Examples | never[]>;
     isSearching: ReadonlySignal<boolean>;
-    selectedExample: Signal<Example>;
+    selectedExample: Signal<Example | null>;
     selectedFile: Signal<ExampleData | null>;
-    activeTab: Signal<Tab>;
+    activeTab: Signal<Tab | null>;
 }
 
 export const AppState = createContext(initialState);

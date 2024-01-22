@@ -42,5 +42,5 @@ export default function useSearchExample() {
 
   }, [state.search?.value, state.filters?.value, searchExamples]);
 
-  return {examples: state.examples || {value: []}, isSearching: isLoadingSearch ? false : state.isSearching};
+  return {examples: state.examples || {value: []}, isSearching: isLoadingSearch ? {value: false} : state.isSearching};
 }

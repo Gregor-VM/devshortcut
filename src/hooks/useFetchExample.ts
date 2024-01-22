@@ -13,14 +13,20 @@ export default function useFetchExamples() {
   const state = useContext(AppState);
 
   const activeTabMemo = useMemo(() => {
-    return state.activeTab.value;
-  }, [state.activeTab.value]);
+    if(state.activeTab && state.activeTab.value) return state.activeTab.value;
+    else return null
+  }, [state.activeTab?.value?.name]);
+
+  const selectedExampleMemo = useMemo(() => {
+    if(state.selectedExample && state.selectedExample.value) return state.selectedExample.value;
+    else return null
+  }, [state.selectedExample?.value?.title]);
 
   const getStructure = async () => {
 
-    if(state.activeTab.value instanceof LocalExampleClass){
+    if(activeTabMemo instanceof LocalExampleClass){
 
-      const data: ExampleResponse = (await axios.get(`/examples/${state.selectedExample.value!.folder}/${state.activeTab.value.folder}`)).data;
+      const data: ExampleResponse = (await axios.get(`/examples/${selectedExampleMemo!.folder}/${activeTabMemo.folder}`)).data;
       if(data.structure){
         setStructure(data.structure);
       }
@@ -28,7 +34,7 @@ export default function useFetchExamples() {
 
     } else {
 
-      const data: ExampleResponse = (await axios.get(`/github?repoUrl=${state.activeTab.value?.repoUrl}`)).data;
+      const data: ExampleResponse = (await axios.get(`/github?repoUrl=${activeTabMemo?.repoUrl}`)).data;
       if(data.structure){
         setStructure(data.structure);
       }
@@ -42,11 +48,11 @@ export default function useFetchExamples() {
 
   useEffect(() => {
 
-    if(state.selectedExample.value?.title){
-      state.activeTab.value = state.selectedExample.value.tabs[0];
+    if(selectedExampleMemo?.title){
+      state.activeTab.value = selectedExampleMemo.tabs[0];
     }
 
-  }, [state.selectedExample.value?.title]);
+  }, [selectedExampleMemo?.title]);
 
   useEffect(() => {
 

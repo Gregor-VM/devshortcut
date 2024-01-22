@@ -13,18 +13,17 @@ interface Props {
 
 export default function ExamplePage({title}: Props) {
 
-
   const {structure, selectedExample, activeTab, structureLoading} = useFetchExamples();
 
   useEffect(() => {
 
-    if(selectedExample && selectedExample.value?.title){
+    if(selectedExample && selectedExample?.value?.title){
     } else {
       const example = examples.find(example => convertToSlug(example.title) === title);
       if(example) selectedExample.value = example;
     }
     
-  }, [selectedExample]);
+  }, [selectedExample?.value?.title]);
 
 
   return (
@@ -32,10 +31,10 @@ export default function ExamplePage({title}: Props) {
 
         <div>
           <nav class="flex gap-1 items-end">
-            {selectedExample.value?.tabs?.map(tab => {
+            {selectedExample?.value?.tabs?.map(tab => {
               return <span class={`
-              ${ tab === activeTab.value ? 'bg-purple-500 text-white' : 'dark:bg-neutral-800 bg-slate-300' }
-              ${ tab === activeTab.value ? '' : 'dark:hover:bg-purple-500/10 hover:bg-slate-300/80'}
+              ${ tab === activeTab?.value ? 'bg-purple-500 text-white' : 'dark:bg-neutral-800 bg-slate-300' }
+              ${ tab === activeTab?.value ? '' : 'dark:hover:bg-purple-500/10 hover:bg-slate-300/80'}
               py-3 px-5 rounded-t-md cursor-pointer
               hover:pb-4
               hover:mt-0

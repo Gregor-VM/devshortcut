@@ -16,7 +16,7 @@ export default function FileContent() {
 
     const handleContentData = (contentData: Uint8Array) => {
 
-        const {fileType, fileExtension} = getFileType(state.selectedFile.value?.item);
+        const {fileType, fileExtension} = getFileType(state.selectedFile?.value?.item);
 
         setContentType(fileType);
 
@@ -46,10 +46,10 @@ export default function FileContent() {
         setContent(null);
 
         if(state.activeTab.value instanceof GithubExampleClass){
-            const contentData = await getContent(state.selectedFile.value!.fileContent + state.activeTab.value.repoUrl);
+            const contentData = await getContent(state.selectedFile?.value!.fileContent + state.activeTab.value.repoUrl);
             handleContentData(contentData);
         } else {
-            const contentData = await getContent(state.selectedFile.value!.fileContent);
+            const contentData = await getContent(state.selectedFile?.value!.fileContent);
             handleContentData(contentData);
         }
 
@@ -61,7 +61,7 @@ export default function FileContent() {
 
     useEffect(() => {
 
-        const path = state.selectedFile.value?.path;
+        const path = state.selectedFile?.value?.path;
 
         if(path){
             getFileContent();
@@ -69,7 +69,7 @@ export default function FileContent() {
             setContent("");
         }
 
-    }, [state.selectedFile.value]);
+    }, [state.selectedFile?.value]);
 
     if(!content) return null;
 
