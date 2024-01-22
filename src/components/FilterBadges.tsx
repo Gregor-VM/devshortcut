@@ -4,7 +4,6 @@ import { AppState } from "../state/search";
 import { Tag } from "../utils/tags";
 import CloseIcon from "../icons/close";
 
-
 export default function FilterBadges() {
 
   const state = useContext(AppState);
@@ -16,7 +15,6 @@ export default function FilterBadges() {
     }
 
   }
-
 
   return (
     <div class="mt-3">

@@ -2,8 +2,6 @@ import LightIcon from "../icons/light";
 import DarkIcon from "../icons/dark";
 import { useEffect, useState } from "preact/hooks";
 
-
-
 export default function ThemeButton() {
 
     const [darkMode, setDarkMode] = useState(true);

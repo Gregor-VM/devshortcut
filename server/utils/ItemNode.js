@@ -20,7 +20,6 @@ export class ItemNode {
 
         await this.getItemNodePath();
         await this.shouldBeMarkAsDirectory();
-        this.shouldBeMarkAsModified();
         this.setFileContent();
 
     }
@@ -45,20 +44,6 @@ export class ItemNode {
             this.fileContent = `/github/file?filePath=${this.path}&repoUrl=`;
         }
 
-    }
-
-    shouldBeMarkAsModified(){
-
-        /* Use ! in folders and files to mark as modified */
-
-        if(this.item.includes("!")){
-            this.modified = true;
-            this.item = this.item.replace("!", "");
-        }
-
-        if(this.parent?.isDirectory && this.parent?.modified){
-            this.modified = true;
-        }
     }
 
     async getNextStructure(){

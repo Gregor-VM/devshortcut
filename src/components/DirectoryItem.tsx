@@ -15,8 +15,6 @@ export default function DirectoryItem({item}: Props) {
 
     const [collapsed, setCollapsed] = useState(false);
 
-
-
     const showDirectoryContent = () => {
 
         setCollapsed(prev => !prev);

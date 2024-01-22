@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "preact/hooks"
 import { AppState } from "../state/search";
 import { axios } from "../utils/axios";
 import { ExampleData, ExampleResponse } from "../types/ExampleResponse";
-import { LocalExampleClass, Tab } from "../utils/utils";
+import { LocalExampleClass } from "../utils/utils";
 
 
 export default function useFetchExamples() {

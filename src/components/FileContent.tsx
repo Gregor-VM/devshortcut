@@ -53,8 +53,6 @@ export default function FileContent() {
             handleContentData(contentData);
         }
 
-
-
     }
 
     const copyContent = () => {
