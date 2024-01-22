@@ -32,7 +32,7 @@ export function createAppState() {
 
     const isSearching = computed(() => {
       return (search.value.length > 0 || filters.value.length > 0)
-    })
+    });
   
     return { search, filters, toString, examples, isSearching, selectedExample, selectedFile, activeTab }
 }

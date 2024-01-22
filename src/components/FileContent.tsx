@@ -1,14 +1,15 @@
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import hljs from 'highlight.js';
-import { AppState } from "../state/search";
 import CopyIcon from "../icons/copy";
 //import 'highlight.js/styles/tokyo-night-dark.min.css';
 import '../assets/highlight.css';
 import { FileType, GithubExampleClass, getContent, getFileType } from "../utils/utils";
+import useAppState from "../hooks/useAppState";
 
 export default function FileContent() {
 
-    const state = useContext(AppState);
+    const {selectedFile, activeTab} = useAppState();
+
     const [content, setContent] = useState<string | null>();
     const [contentType, setContentType] = useState<FileType>();
     const [imageContent, setImageContent] = useState<string>();
@@ -16,7 +17,7 @@ export default function FileContent() {
 
     const handleContentData = (contentData: Uint8Array) => {
 
-        const {fileType, fileExtension} = getFileType(state.selectedFile?.value?.item);
+        const {fileType, fileExtension} = getFileType(selectedFile?.item);
 
         setContentType(fileType);
 
@@ -33,7 +34,7 @@ export default function FileContent() {
         setContent( utf8Text );
 
         setTimeout(() => {
-            //avoid highlithing more than 50,000 for performance reasons
+            //avoid highlithing more than 50,000 for performance issues
             if(utf8Text.length > 50000) return null;
             hljs.highlightAll();
         }, 0);
@@ -45,11 +46,11 @@ export default function FileContent() {
 
         setContent(null);
 
-        if(state.activeTab.value instanceof GithubExampleClass){
-            const contentData = await getContent(state.selectedFile?.value!.fileContent + state.activeTab.value.repoUrl);
+        if(activeTab instanceof GithubExampleClass){
+            const contentData = await getContent(selectedFile!.fileContent + activeTab.repoUrl);
             handleContentData(contentData);
         } else {
-            const contentData = await getContent(state.selectedFile?.value!.fileContent);
+            const contentData = await getContent(selectedFile!.fileContent);
             handleContentData(contentData);
         }
 
@@ -61,7 +62,7 @@ export default function FileContent() {
 
     useEffect(() => {
 
-        const path = state.selectedFile?.value?.path;
+        const path = selectedFile?.path;
 
         if(path){
             getFileContent();
@@ -69,7 +70,7 @@ export default function FileContent() {
             setContent("");
         }
 
-    }, [state.selectedFile?.value]);
+    }, [selectedFile]);
 
     if(!content) return null;
 

@@ -6,6 +6,7 @@ import { filterBySearch, filterByTags } from "../utils/utils";
 
 export default function useSearchExample() {
 
+  const [examplesLength, setExamplesLength] = useState(0);
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
 
   const state = useContext(AppState);
@@ -22,12 +23,13 @@ export default function useSearchExample() {
     matchesExamples = filterBySearch(state.search!.value, examples);
     matchesExamples = filterByTags(state.filters!.value, matchesExamples);
 
-    if(state.examples?.value){
+    if(state.examples){
+      setExamplesLength(matchesExamples.length);
       state.examples.value = matchesExamples;
       setIsLoadingSearch(false);
     }
 
-  }, []);
+  }, [state.examples?.value, state.search?.value, state.filters?.value]);
 
 
   useEffect(() => {
@@ -36,11 +38,11 @@ export default function useSearchExample() {
 
       setIsLoadingSearch(true);
 
-      searchExamples()
+      searchExamples();
 
     }
 
   }, [state.search?.value, state.filters?.value, searchExamples]);
 
-  return {examples: state.examples || {value: []}, isSearching: isLoadingSearch ? {value: false} : state.isSearching};
+  return {examples: state.examples || {value: []}, isSearching: isLoadingSearch ? {value: false} : state.isSearching, examplesLength};
 }

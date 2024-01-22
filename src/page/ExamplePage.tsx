@@ -5,25 +5,27 @@ import useFetchExamples from "../hooks/useFetchExample";
 import FileContent from "../components/FileContent";
 import ShowStructure from "../components/ShowStructure";
 import StructureSkeleton from "../components/StructureSkeleton";
+import useAppState from "../hooks/useAppState";
 
 interface Props {
   title: string
 }
 
-
 export default function ExamplePage({title}: Props) {
 
-  const {structure, selectedExample, activeTab, structureLoading} = useFetchExamples();
+  const {activeTab, selectedExample, setActiveTab, setSelectedExample} = useAppState();
+
+  const {structure, structureLoading} = useFetchExamples();
 
   useEffect(() => {
 
-    if(selectedExample && selectedExample?.value?.title){
+    if(selectedExample && selectedExample?.title){
     } else {
       const example = examples.find(example => convertToSlug(example.title) === title);
-      if(example) selectedExample.value = example;
+      if(example) setSelectedExample(example);
     }
     
-  }, [selectedExample?.value?.title]);
+  }, [selectedExample?.title]);
 
 
   return (
@@ -31,16 +33,16 @@ export default function ExamplePage({title}: Props) {
 
         <div>
           <nav class="flex gap-1 items-end">
-            {selectedExample?.value?.tabs?.map(tab => {
+            {selectedExample?.tabs?.map(tab => {
               return <span class={`
-              ${ tab === activeTab?.value ? 'bg-purple-500 text-white' : 'dark:bg-neutral-800 bg-slate-300' }
-              ${ tab === activeTab?.value ? '' : 'dark:hover:bg-purple-500/10 hover:bg-slate-300/80'}
+              ${ tab === activeTab ? 'bg-purple-500 text-white' : 'dark:bg-neutral-800 bg-slate-300' }
+              ${ tab === activeTab ? '' : 'dark:hover:bg-purple-500/10 hover:bg-slate-300/80'}
               py-3 px-5 rounded-t-md cursor-pointer
               hover:pb-4
               hover:mt-0
               mt-1
               transition-all`}
-              onClick={() => activeTab.value = tab}
+              onClick={() => setActiveTab(tab)}
               >{tab.name}</span>
             })}
           </nav>

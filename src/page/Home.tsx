@@ -1,4 +1,4 @@
-import { useContext } from "preact/hooks"
+import { useContext, useEffect } from "preact/hooks"
 import {JSXInternal} from "preact/src/jsx.d";
 import FilterSection from "../components/FilterSection";
 import { AppState } from "../state/search";
@@ -11,7 +11,7 @@ import { route } from "preact-router";
 
 export default function Home() {
 
-  const {examples, isSearching} = useSearchExample();
+  const {isSearching, examplesLength} = useSearchExample();
 
   const state = useContext(AppState);
 
@@ -42,11 +42,11 @@ export default function Home() {
 
         <FilterBadges />
 
-        {isSearching?.value && examples?.value.length === 0 && (<NotFound />)}
+        {isSearching?.value && examplesLength === 0 && (<NotFound />)}
 
-        {isSearching?.value && examples?.value.length > 0 && <Examples />}
+        {isSearching?.value && examplesLength > 0 && <Examples />}
 
-        {(examples?.value.length === 0 && !isSearching?.value) && <FilterSection />}
+        {(examplesLength === 0 && !isSearching?.value) && <FilterSection />}
 
       </section>
 

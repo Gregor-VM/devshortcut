@@ -1,8 +1,9 @@
-import { useContext, useEffect, useMemo, useState } from "preact/hooks"
+import { useContext, useEffect, useState } from "preact/hooks"
 import { AppState } from "../state/search";
 import { axios } from "../utils/axios";
 import { ExampleData, ExampleResponse } from "../types/ExampleResponse";
 import { LocalExampleClass } from "../utils/utils";
+import useAppState from "./useAppState";
 
 
 export default function useFetchExamples() {
@@ -12,33 +13,25 @@ export default function useFetchExamples() {
 
   const state = useContext(AppState);
 
-  const activeTabMemo = useMemo(() => {
-    if(state.activeTab && state.activeTab.value) return state.activeTab.value;
-    else return null
-  }, [state.activeTab?.value?.name]);
-
-  const selectedExampleMemo = useMemo(() => {
-    if(state.selectedExample && state.selectedExample.value) return state.selectedExample.value;
-    else return null
-  }, [state.selectedExample?.value?.title]);
+  const {activeTab, selectedExample, setActiveTab, setSelectedFile} = useAppState();
 
   const getStructure = async () => {
 
-    if(activeTabMemo instanceof LocalExampleClass){
+    if(activeTab instanceof LocalExampleClass){
 
-      const data: ExampleResponse = (await axios.get(`/examples/${selectedExampleMemo!.folder}/${activeTabMemo.folder}`)).data;
+      const data: ExampleResponse = (await axios.get(`/examples/${selectedExample!.folder}/${activeTab.folder}`)).data;
       if(data.structure){
         setStructure(data.structure);
       }
-      state.selectedFile.value = null;
+      setSelectedFile(null);
 
     } else {
 
-      const data: ExampleResponse = (await axios.get(`/github?repoUrl=${activeTabMemo?.repoUrl}`)).data;
+      const data: ExampleResponse = (await axios.get(`/github?repoUrl=${activeTab?.repoUrl}`)).data;
       if(data.structure){
         setStructure(data.structure);
       }
-      state.selectedFile.value = null;
+      setSelectedFile(null);
 
     }
 
@@ -48,19 +41,19 @@ export default function useFetchExamples() {
 
   useEffect(() => {
 
-    if(selectedExampleMemo?.title){
-      state.activeTab.value = selectedExampleMemo.tabs[0];
+    if(selectedExample?.title){
+      setActiveTab(selectedExample.tabs[0]);
     }
 
-  }, [selectedExampleMemo?.title]);
+  }, [selectedExample?.title]);
 
   useEffect(() => {
 
-    if(activeTabMemo?.name) {
+    if(activeTab?.name) {
       getStructure();
     }
 
-  }, [activeTabMemo]);
+  }, [activeTab]);
 
 
   return ({
