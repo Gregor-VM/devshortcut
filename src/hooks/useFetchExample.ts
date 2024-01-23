@@ -55,6 +55,18 @@ export default function useFetchExamples() {
 
   }, [activeTab]);
 
+  useEffect(() => {
+
+    return () => {
+
+      setActiveTab(null);
+      setSelectedFile(null);
+      state.selectedExample.value = null;
+
+    }
+
+  }, []);
+
 
   return ({
     structure,

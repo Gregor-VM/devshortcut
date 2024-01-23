@@ -1,11 +1,12 @@
 import { useEffect } from "preact/hooks"
-import examples from "../examples/examples";
-import { convertToSlug } from "../utils/utils";
+import examples, { Example } from "../examples/examples";
+import { GithubExample, convertToSlug } from "../utils/utils";
 import useFetchExamples from "../hooks/useFetchExample";
 import FileContent from "../components/FileContent";
 import ShowStructure from "../components/ShowStructure";
 import StructureSkeleton from "../components/StructureSkeleton";
 import useAppState from "../hooks/useAppState";
+import { route } from "preact-router";
 
 interface Props {
   title: string
@@ -19,10 +20,29 @@ export default function ExamplePage({title}: Props) {
 
   useEffect(() => {
 
+
+
     if(selectedExample && selectedExample?.title){
+      //for later...
     } else {
+
       const example = examples.find(example => convertToSlug(example.title) === title);
       if(example) setSelectedExample(example);
+
+      if(!example){
+        const exampleData = sessionStorage.getItem(title);
+        if(exampleData){
+          const jsonData = JSON.parse(exampleData);
+          const sessionExample: Example = {
+            tabs: [GithubExample(jsonData.tabs[0].name, jsonData.tabs[0].repoUrl)],
+            tags: [],
+            title: jsonData.title
+          }
+          setSelectedExample(sessionExample);
+        }
+      }
+      
+      else route('/');
     }
     
   }, [selectedExample?.title]);

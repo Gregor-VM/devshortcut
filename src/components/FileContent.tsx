@@ -58,6 +58,8 @@ export default function FileContent() {
 
     const copyContent = () => {
 
+        //TODO: COPY TEXT AND DISPLAY NOTIFICATION
+
     }
 
     useEffect(() => {
@@ -74,19 +76,29 @@ export default function FileContent() {
 
     if(!content) return null;
 
-    return <pre class="p-5 relative">
+    // TODO: ADD LINE NUMERATION
+
+    if(contentType === FileType.TEXT){
+        return <pre class="p-5 relative">
         <span 
             onClick={copyContent}
             class="w-6 h-6 block absolute top-2 right-2 cursor-pointer"
         ><CopyIcon /></span>
-        {contentType === FileType.TEXT && (
-            <code class="text-wrap dark:bg-neutral-900 bg-slate-200 dark:text-white text-black">
+        <code class="text-wrap dark:bg-neutral-900 bg-slate-200 dark:text-white text-black">
             {content}
-            </code>
-        )}
+        </code>
+    </pre>
+    }
 
+    if(contentType === FileType.IMAGE){
+        return <div class="p-5 h-full grid content-center">
         {contentType === FileType.IMAGE && (
             <img class="w-90 mx-auto" src={imageContent} />
         )}
-    </pre>
+    </div>
+    }
+
+    // TODO: ADD MORE FILE TYPES (VIDEOS AND AUDIOS)
+    // TODO: HANDLE FILES THAT CANNOT BE DISPLAYED (PDF, DOCX, XLS...)
+
 }

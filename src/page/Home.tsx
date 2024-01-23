@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "preact/hooks"
+import { useContext } from "preact/hooks"
 import {JSXInternal} from "preact/src/jsx.d";
 import FilterSection from "../components/FilterSection";
 import { AppState } from "../state/search";
@@ -7,6 +7,7 @@ import { Examples } from "../components/Examples";
 import FilterBadges from "../components/FilterBadges";
 import NotFound from "../components/NotFound";
 import { route } from "preact-router";
+import { GithubExample, getRepoNameFromUrl } from "../utils/utils";
 
 
 export default function Home() {
@@ -19,8 +20,18 @@ export default function Home() {
 
     if(state.search) state.search.value = e.target.value;
 
-    if(e.target.value.includes("https://github.com/")){
-      route("/github-viewer")
+    const repoUrl = e.target.value;
+    const repoName = getRepoNameFromUrl(repoUrl);
+
+    if(repoName){
+      const exampleData = ({
+        tabs: [GithubExample("code", repoUrl)],
+        tags: [],
+        title: repoName,
+      });
+      state.selectedExample.value = (exampleData);
+      sessionStorage.setItem(repoName, JSON.stringify(exampleData));
+      route(`example/${repoName}`);
     }
 
   }

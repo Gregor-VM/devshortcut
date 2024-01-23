@@ -197,3 +197,14 @@ export type Tab = LocalExampleClass | GithubExampleClass
 export const GithubExample = (name: string, repoUrl: string) => {
     return new GithubExampleClass(name, repoUrl);
 }
+
+/**
+ * Returns the repository name from a valid GitHub repository URL.
+ * @param {string} url - The GitHub repository URL.
+ * @returns {string | null} - The repository name if the input is a valid GitHub repository URL, null otherwise.
+ */
+export function getRepoNameFromUrl(url: string): string | null {
+    const githubRepoRegex = /^(https?:\/\/)?(www\.)?github\.com\/([a-zA-Z\d-]+)\/([a-zA-Z\d-]+)(\.git)?$/;
+    const match = url.match(githubRepoRegex);
+    return match ? match[4] : null;
+  }

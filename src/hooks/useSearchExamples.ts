@@ -16,6 +16,7 @@ export default function useSearchExample() {
     let matchesExamples = [];
 
     if(state.search!.value.length === 0 && state.filters!.value.length === 0){
+      setExamplesLength(0);
       state.examples.value = [];
       return null;
     }
