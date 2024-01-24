@@ -35,6 +35,7 @@ export default function ThemeButton() {
 
     return (
     <button 
+    title={darkMode ? 'Change to Dark Mode' : 'Change to Light Mode'}
     class="w-16 p-1 rounded-2xl dark:border-white/50 border-slate-700/50 border-2 shadow group relative overflow-hidden transition-all duration-75"
     onClick={toggleDarkMode}>
 

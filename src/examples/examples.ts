@@ -15,20 +15,27 @@ const examples = [
             LocalExample('flutter'),
         ],
         folder: 'redux',
-        content: null,
         tags: [tags.react, tags.storeManagament, tags.flutter, tags.typescript, tags.javascript],
-        docs: null
     },
     {
         title: 'Sorting',
         tabs: [
-            GithubExample('JavaScript', 'https://github.com/Gregor-VM/react-clicker-game'),
+            LocalExample('react'),
+            GithubExample('JavaScript', 'https://github.com/Gregor-VM/Gregor-VM'),
+        ],
+        folder: 'redux',
+        tags: [tags.react, tags.flutter, tags.typescript, tags.javascript]
+    },
+    {
+        title: 'Fibonacci',
+        tabs: [
+            GithubExample('JavaScript', 'https://github.com/Gregor-VM/Gregor-VM'),
         ],
         tags: [tags.react, tags.flutter, tags.typescript, tags.javascript]
     },
 ];
 
-export type Examples = typeof examples;
+//export type Examples = typeof examples;
 export type Example = typeof examples[0];
 
 export default examples;

@@ -1,13 +1,13 @@
 import { useContext } from "preact/hooks"
-import {JSXInternal} from "preact/src/jsx.d";
 import FilterSection from "../components/FilterSection";
-import { AppState } from "../state/search";
+import { AppState } from "../state/appState";
 import useSearchExample from "../hooks/useSearchExamples";
 import { Examples } from "../components/Examples";
 import FilterBadges from "../components/FilterBadges";
 import NotFound from "../components/NotFound";
 import { route } from "preact-router";
 import { GithubExample, getRepoNameFromUrl } from "../utils/utils";
+import { InputEvent } from "../types/ClickEvent";
 
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
 
   const state = useContext(AppState);
 
-  const onInput = (e: JSXInternal.InputEventHandler<HTMLInputElement>) => {
+  const onInput = (e: InputEvent) => {
 
     if(state.search) state.search.value = e.target.value;
 

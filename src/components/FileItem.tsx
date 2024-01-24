@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "preact/hooks";
 import { ExampleData } from "../types/ExampleResponse";
-import { AppState } from "../state/search";
+import { AppState } from "../state/appState";
 import { getPadding } from "../utils/utils";
 import FileIcon from "../icons/file";
 

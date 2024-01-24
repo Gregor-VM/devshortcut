@@ -1,12 +1,16 @@
 import { useEffect } from "preact/hooks"
 import examples, { Example } from "../examples/examples";
-import { GithubExample, convertToSlug } from "../utils/utils";
+import { GithubExampleClass, convertToExample, convertToSlug } from "../utils/utils";
 import useFetchExamples from "../hooks/useFetchExample";
 import FileContent from "../components/FileContent";
 import ShowStructure from "../components/ShowStructure";
 import StructureSkeleton from "../components/StructureSkeleton";
 import useAppState from "../hooks/useAppState";
 import { route } from "preact-router";
+import ExampleTab from "../components/ExampleTab";
+import BookmarkBtn from "../components/BookmarkBtn";
+import GitHubIcon from "../icons/github";
+import HoverEffect from "../components/HoverEffect";
 
 interface Props {
   title: string
@@ -14,13 +18,27 @@ interface Props {
 
 export default function ExamplePage({title}: Props) {
 
-  const {activeTab, selectedExample, setActiveTab, setSelectedExample} = useAppState();
+  const {activeTab, selectedExample, setSelectedExample} = useAppState();
 
   const {structure, structureLoading} = useFetchExamples();
 
+  const showGithubRepo = () => {
+
+    if(activeTab instanceof GithubExampleClass){
+
+      return <HoverEffect>
+        <a class="block w-6 h-6" target="_blank" href={activeTab.repoUrl}>
+          <GitHubIcon />
+        </a>
+      </HoverEffect>
+
+    } else {
+      return null;
+    }
+
+  }
+
   useEffect(() => {
-
-
 
     if(selectedExample && selectedExample?.title){
       //for later...
@@ -33,16 +51,13 @@ export default function ExamplePage({title}: Props) {
         const exampleData = sessionStorage.getItem(title);
         if(exampleData){
           const jsonData = JSON.parse(exampleData);
-          const sessionExample: Example = {
-            tabs: [GithubExample(jsonData.tabs[0].name, jsonData.tabs[0].repoUrl)],
-            tags: [],
-            title: jsonData.title
-          }
+          const sessionExample = convertToExample(jsonData);
           setSelectedExample(sessionExample);
+        } else {
+          route('/');
         }
       }
       
-      else route('/');
     }
     
   }, [selectedExample?.title]);
@@ -52,20 +67,26 @@ export default function ExamplePage({title}: Props) {
     <section class="mx-6 lg:mx-4 mt-2 max-h-screen">
 
         <div>
-          <nav class="flex gap-1 items-end">
-            {selectedExample?.tabs?.map(tab => {
-              return <span class={`
-              ${ tab === activeTab ? 'bg-purple-500 text-white' : 'dark:bg-neutral-800 bg-slate-300' }
-              ${ tab === activeTab ? '' : 'dark:hover:bg-purple-500/10 hover:bg-slate-300/80'}
-              py-3 px-5 rounded-t-md cursor-pointer
-              hover:pb-4
-              hover:mt-0
-              mt-1
-              transition-all`}
-              onClick={() => setActiveTab(tab)}
-              >{tab.name}</span>
-            })}
-          </nav>
+
+
+          <div class="flex justify-between">
+          
+            <nav class="flex gap-1 items-end">
+              {selectedExample?.tabs?.map(tab => {
+                return <ExampleTab tab={tab} />
+              })}
+            </nav>
+
+            <span class="flex items-center mr-3 gap-2">
+
+              {showGithubRepo()}
+
+              <BookmarkBtn example={selectedExample as Example} />
+
+            </span>
+
+          </div>
+          
 
             
           <div class="w-full example-view flex justify-start md:flex-row flex-col

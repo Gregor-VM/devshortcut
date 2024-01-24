@@ -1,5 +1,5 @@
 import { useContext } from "preact/hooks";
-import { AppState } from "../state/search";
+import { AppState } from "../state/appState";
 import tags, { TagTypeEnum } from "../utils/tags";
 import {JSXInternal} from "preact/src/jsx.d";
 

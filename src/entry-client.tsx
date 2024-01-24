@@ -2,7 +2,7 @@ import './index.css'
 import { hydrate } from 'preact'
 import { App } from './app'
 
-import { AppState, createAppState } from './state/search';
+import { AppState, createAppState } from './state/appState';
 
 hydrate(
     <AppState.Provider value={createAppState()}>

@@ -7,7 +7,7 @@ export enum TagTypeEnum {
 
 type TagType = keyof typeof TagTypeEnum;
 
-const Tag = (name: string, topic: TagType = "library" ) => {
+export const Tag = (name: string, topic: TagType = "library" ) => {
 
     class Tag{
         name: string;

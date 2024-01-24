@@ -1,4 +1,4 @@
-import { Examples } from "../examples/examples";
+import { Example } from "../examples/examples";
 import { ExampleData } from "../types/ExampleResponse";
 import { axios } from "./axios";
 import { Tag } from "./tags";
@@ -33,12 +33,12 @@ export const exampleMatchFilters = (examplesTags: Tag[], tags: Tag[]) => {
 /**
  * Return the examples matches given a query by examples titles
  * @param {string} query
- * @param {Examples} examples
- * @returns {Examples}
+ * @param {Example[]} examples
+ * @returns {Example[]}
  */
-export const filterBySearch = (query: string, examples: Examples) => {
+export const filterBySearch = (query: string, examples: Example[]) => {
 
-    const matchesExamples: Examples = [];
+    const matchesExamples: Example[] = [];
 
     if(query.length > 0){
 
@@ -63,12 +63,12 @@ export const filterBySearch = (query: string, examples: Examples) => {
 /**
  * Return the examples matches given array of tags
  * @param {Tag[]} tags
- * @param {Examples} examples
- * @returns {Examples}
+ * @param {Example[]} examples
+ * @returns {Example[]}
  */
-export const filterByTags = (tags: Tag[], examples: Examples) => {
+export const filterByTags = (tags: Tag[], examples: Example[]) => {
 
-    const matchesExamples: Examples = [];
+    const matchesExamples: Example[] = [];
 
     if(tags.length > 0){
 
@@ -208,3 +208,38 @@ export function getRepoNameFromUrl(url: string): string | null {
     const match = url.match(githubRepoRegex);
     return match ? match[4] : null;
   }
+
+
+/**
+ * Returns true if the example is present on a list of examples, false otherwise.
+ * @param {Example[]} bookmarks
+ * @param {Example} example
+ * @returns {boolean}
+ */
+export function isInBookmark(bookmarks: Example[], example: Example) {
+    const bookmarkTitles = bookmarks.map(bookmark => bookmark.title);
+    return bookmarkTitles.includes(example.title);
+}
+
+
+/**
+ * Convert a jsonValue to Example value
+ * @param {Object} json
+ * @returns {Example}
+ */
+export function convertToExample(json: any) {
+
+    return ({
+        title: json.title,
+        tags: json.tags.map((tag: any) => Tag(tag.name, tag?.topic)),
+        folder: json?.folder,
+        tabs: json.tabs.map((tab: any) => {
+          if(tab?.repoUrl){
+            return GithubExample(tab.name, tab.repoUrl);
+          } else {
+            return LocalExample(tab.name, tab?.folder);
+          }
+        })
+    });
+    
+}

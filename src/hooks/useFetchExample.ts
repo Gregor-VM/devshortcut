@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "preact/hooks"
-import { AppState } from "../state/search";
+import { AppState } from "../state/appState";
 import { axios } from "../utils/axios";
 import { ExampleData, ExampleResponse } from "../types/ExampleResponse";
 import { LocalExampleClass } from "../utils/utils";
@@ -16,6 +16,9 @@ export default function useFetchExamples() {
   const {activeTab, selectedExample, setActiveTab, setSelectedFile} = useAppState();
 
   const getStructure = async () => {
+
+    setStructureLoading(true);
+    setStructure(undefined);
 
     if(activeTab instanceof LocalExampleClass){
 

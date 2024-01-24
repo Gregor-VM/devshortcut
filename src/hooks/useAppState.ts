@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "preact/hooks"
-import { AppState } from "../state/search";
+import { AppState } from "../state/appState";
 import { Tab } from "../utils/utils";
 import { Example } from "../examples/examples";
 import { ExampleData } from "../types/ExampleResponse";
@@ -32,10 +32,12 @@ export default function useAppState() {
   }
 
 
+
   return ({
     activeTab: activeTabMemo,
     selectedExample: selectedExampleMemo,
     selectedFile: state.selectedFile?.value,
+    bookmarks: state.bookmarks?.value,
     setActiveTab,
     setSelectedExample,
     setSelectedFile,

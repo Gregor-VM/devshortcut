@@ -8,7 +8,7 @@ export default function Navbar() {
     return (
       <nav class="flex justify-between items-center py-4 px-6 border-b-2 dark:border-b-purple-800/40 shadow-2xl shadow-purple-500/10 dark:bg-neutral-800/70">
 
-        <h1>DevShortcut</h1>
+        <a title="Go home" href="/"><h1>DevShortcut</h1></a>
 
         <ul class="flex gap-4 items-center">
             
@@ -22,7 +22,7 @@ export default function Navbar() {
             </a>
             
             <HoverEffect>
-                <a href="#" class="w-6 h-6 block"><GitHubIcon /></a>
+                <a title="See on github" href="#" class="w-6 h-6 block"><GitHubIcon /></a>
             </HoverEffect>
 
             <ThemeButton />
