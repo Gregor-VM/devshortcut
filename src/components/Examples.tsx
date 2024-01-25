@@ -1,7 +1,7 @@
-import { useContext } from "preact/hooks";
+import { useContext, useState } from "preact/hooks";
+import { createPortal } from 'preact/compat';
 import { AppState } from "../state/appState";
 import { Example } from "../examples/examples";
-import { route } from "preact-router";
 import { convertToSlug } from "../utils/utils";
 import BookmarkBtn from "./BookmarkBtn";
 import HoverEffect from "./HoverEffect";
@@ -9,12 +9,18 @@ import ShareIcon from "../icons/share";
 import ExternalLinkIcon from "../icons/externalLink";
 import useAppState from "../hooks/useAppState";
 import { ButtonEvent } from "../types/ClickEvent";
+import ShareUrlModal from "./ShareUrlModal";
 
 interface Props{
     showExamples?: Example[]
 }
 
 export function Examples({showExamples}: Props) {
+
+    const [showModal, setShowModal] = useState(false);
+    const [url, setUrl] = useState("");
+
+    const container = document.getElementById('modals')!;
 
     const state = useContext(AppState);
 
@@ -29,6 +35,17 @@ export function Examples({showExamples}: Props) {
 
     const openExternalLink = (e: ButtonEvent) => {
         e.stopPropagation();
+    }
+
+    const shareUrl = (e: ButtonEvent, example: Example) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const base = document.baseURI;
+        const url = `${base}example/${convertToSlug(example.title)}`;
+
+        setUrl(url);
+        setShowModal(true);
     }
 
     return <section class="my-6">
@@ -49,18 +66,18 @@ export function Examples({showExamples}: Props) {
                 cursor-pointer"
                 >
                     <h2 class="text-xl">{example.title}</h2>
-                    <div class="flex justify-around gap-5 w-full border-t-2 border-neutral-700 pt-3">
-                        <BookmarkBtn example={example} />
+                    <div class="flex justify-around gap-5 w-full border-t-2 border-neutral-700">
+                        <BookmarkBtn class="p-3" example={example} />
 
-                        <button title="Share" class="block w-6 h-6">
+                        <button class="p-3" onClick={(e) => shareUrl(e, example)} title="Share" >
                             <HoverEffect>
-                                <ShareIcon />
+                                <span class="block w-6 h-6"><ShareIcon /></span>
                             </HoverEffect>
                         </button>
 
-                        <a href={`/example/${convertToSlug(example.title)}`} target="_blank" data-native title="Open in new page" onClick={openExternalLink} class="block w-6 h-6">
+                        <a class="p-3" href={`/example/${convertToSlug(example.title)}`} target="_blank" data-native title="Open in new page" onClick={openExternalLink}>
                             <HoverEffect>
-                                <ExternalLinkIcon />
+                                <span class="block w-6 h-6"><ExternalLinkIcon /></span>
                             </HoverEffect>
                         </a>
 
@@ -68,5 +85,6 @@ export function Examples({showExamples}: Props) {
                 </a>
             })}
         </div>
+        {createPortal(<ShareUrlModal closeModal={() => setShowModal(false)} show={showModal} url={url} />, container)}
     </section>
 }

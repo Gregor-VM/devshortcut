@@ -34,8 +34,10 @@ export function Filters({title, filterKey}: {title: string, filterKey: keyof typ
                 hover:bg-neutral-100/80
                 dark:bg-neutral-700/80 rounded
                 dark:hover:bg-neutral-700 shadow-lg shadow-white-500/20 
+                bg-gradient-to-r dark:from-purple-700/10 dark:to-neutral-700/80
+                dark:hover:to-purple-700/20
                 hover:-translate-y-1
-                transition-transform
+                transition-all
                 cursor-pointer"
                 >{name}</div>
             })}

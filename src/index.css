@@ -36,6 +36,16 @@
   height: calc(100vh - 9rem);
 }
 
+#modals .modal-container{
+  height: 100vh;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  background-color: rgba(0, 0, 0, .2);
+  display: grid;
+  align-content: center;
+}
+
 /*
 
 a {

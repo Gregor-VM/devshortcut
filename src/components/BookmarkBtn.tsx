@@ -9,10 +9,11 @@ import { isInBookmark } from '../utils/utils'
 import { ButtonEvent } from '../types/ClickEvent'
 
 interface Props{
-    example: Example
+    example: Example,
+    class: string
 }
 
-function BookmarkBtn({example}: Props) {
+function BookmarkBtn({example, class: className}: Props) {
 
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -43,8 +44,10 @@ function BookmarkBtn({example}: Props) {
 
   return (
     <HoverEffect>
-        <button title="Bookmark" onClick={markBookmark} class="block w-6 h-6">
-            {isBookmarked ? <BookmarkFilledIcon /> : <BookmarkIcon />}
+        <button title="Bookmark" onClick={markBookmark} class={className}>
+            <span className="block w-6 h-6">
+              {isBookmarked ? <BookmarkFilledIcon /> : <BookmarkIcon />}
+            </span>
         </button>
     </HoverEffect>
   )

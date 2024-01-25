@@ -12,10 +12,20 @@
         document.documentElement.classList.remove('dark')
       }
     </script>
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/shareon@2/dist/shareon.min.css"
+    rel="stylesheet"
+    />
+    <script
+    src="https://cdn.jsdelivr.net/npm/shareon@2/dist/shareon.iife.js"
+    defer
+    ></script>
     <!--app-head-->
   </head>
   <body class="dark:bg-neutral-900 bg-slate-200 dark:text-white">
     <div id="app"><!--app-html--></div>
+    <div id="modals"></div>
     <script type="module" src="/src/entry-client.tsx"></script>
   </body>
 </html>
