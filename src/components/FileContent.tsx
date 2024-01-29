@@ -1,18 +1,23 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import hljs from 'highlight.js';
 import CopyIcon from "../icons/copy";
 //import 'highlight.js/styles/tokyo-night-dark.min.css';
 import '../assets/highlight.css';
 import { FileType, GithubExampleClass, getContent, getFileType } from "../utils/utils";
 import useAppState from "../hooks/useAppState";
+import CheckIcon from "../icons/check";
 
 export default function FileContent() {
 
     const {selectedFile, activeTab} = useAppState();
+    
+    const copyBtnRef = useRef<HTMLSpanElement>(null);
 
     const [content, setContent] = useState<string | null>();
     const [contentType, setContentType] = useState<FileType>();
-    const [imageContent, setImageContent] = useState<string>();
+    const [fileURL, setFileURL] = useState<string>();
+
+    const [showCopyBtn, setShowCopyBtn] = useState(true);
 
 
     const handleContentData = (contentData: Uint8Array) => {
@@ -22,10 +27,22 @@ export default function FileContent() {
         setContentType(fileType);
 
         if(fileType === FileType.IMAGE){
-            const binaryString = contentData.reduce((acc, byte) => acc + String.fromCharCode(byte), '');
-            const base64String = btoa(binaryString);
-            const dataURL = `data:image/${fileExtension};base64,${base64String}`;
-            setImageContent(dataURL);
+
+            const blob = new Blob([contentData], { type: `image/${fileExtension}` });
+            setFileURL(URL.createObjectURL(blob));
+
+        }
+
+        if(fileType === FileType.AUDIO){
+
+            const blob = new Blob([contentData], { type: `audio/${fileExtension}` });
+            setFileURL(URL.createObjectURL(blob));
+        }
+
+        if(fileType === FileType.VIDEO){
+
+            const blob = new Blob([contentData], { type: `video/${fileExtension}` });
+            setFileURL(URL.createObjectURL(blob));
         }
 
         const textDecoder = new TextDecoder('utf-8');
@@ -45,6 +62,7 @@ export default function FileContent() {
     const getFileContent = async () => {
 
         setContent(null);
+        setFileURL(undefined);
 
         if(activeTab instanceof GithubExampleClass){
             const contentData = await getContent(selectedFile!.fileContent + activeTab.repoUrl);
@@ -56,9 +74,42 @@ export default function FileContent() {
 
     }
 
-    const copyContent = () => {
+    const copyAnimation = () => {
+
+        copyBtnRef.current?.classList.add('copy-btn-animation');
+
+        setTimeout(() => {
+
+            copyBtnRef.current?.classList.remove('copy-btn-animation');
+
+        }, 1000);
+
+        setTimeout(() => {
+
+            setShowCopyBtn(false);
+
+        }, 250);
+
+        setTimeout(() => {
+
+            setShowCopyBtn(true);
+
+        }, 750);
+
+    }
+
+    const copyContent = async () => {
+
+        /*const clipboard = new Clipboard();
+
+        if(typeof content === "string"){
+            await clipboard.writeText(content);
+        }*/
 
         //TODO: COPY TEXT AND DISPLAY NOTIFICATION
+
+        copyAnimation();
+
 
     }
 
@@ -72,6 +123,10 @@ export default function FileContent() {
             setContent("");
         }
 
+        return () => {
+            copyBtnRef.current?.classList.remove('copy-btn-animation');
+        }
+
     }, [selectedFile]);
 
     if(!content) return null;
@@ -79,26 +134,48 @@ export default function FileContent() {
     // TODO: ADD LINE NUMERATION
 
     if(contentType === FileType.TEXT){
-        return <pre class="p-5 relative">
+        return <>
+
         <span 
+            ref={copyBtnRef}
             onClick={copyContent}
-            class="w-6 h-6 block absolute top-2 right-2 cursor-pointer"
-        ><CopyIcon /></span>
+            class="w-6 h-6 block absolute top-96 md:top-36 right-12 z-10 cursor-pointer"
+        >{ showCopyBtn ? <CopyIcon /> : <CheckIcon /> }</span>
+
+        <pre class="p-5 relative">
         <code class="text-wrap dark:bg-neutral-900 bg-slate-200 dark:text-white text-black">
-            {content}
+            {content.length < 500000 ? content : 'The file is too large to be displayed, you may want to download it here instead.'}
         </code>
     </pre>
+    </>
     }
 
     if(contentType === FileType.IMAGE){
-        return <div class="p-5 h-full grid content-center">
-        {contentType === FileType.IMAGE && (
-            <img class="w-90 mx-auto" src={imageContent} />
-        )}
+        return <div class="mt-3 p-5 h-full grid content-center">
+        <img class="w-90 mx-auto" src={fileURL} />
     </div>
     }
 
-    // TODO: ADD MORE FILE TYPES (VIDEOS AND AUDIOS)
-    // TODO: HANDLE FILES THAT CANNOT BE DISPLAYED (PDF, DOCX, XLS...)
+    if(contentType === FileType.AUDIO){
+        return <div class="p-5 h-full grid content-center">
+        <audio class="w-full" controls src={fileURL}></audio>
+    </div>
+    }
+
+    if(contentType === FileType.VIDEO){
+        return <div class="md:p-20 p-5 h-full grid content-center">
+            <video class="w-full h-full" controls width="250">
+                <source src={fileURL} type="video/mp4" />
+            </video>
+    </div>
+    }
+
+    if(contentType === FileType.UNKNOWN){
+        return <div class="md:p-20 p-5 h-full grid content-center">
+        <h5 class="text-center">
+            This file type cannot be displayed you may want to download it here instead.
+        </h5>
+    </div>
+    }
 
 }

@@ -8,7 +8,10 @@ export default function Navbar() {
     return (
       <nav class="flex justify-between items-center py-4 px-6 border-b-2 dark:border-b-purple-800/40 shadow-2xl shadow-purple-500/10 dark:bg-neutral-800/70">
 
-        <a title="Go home" href="/"><h1>DevShortcut</h1></a>
+        <a title="Go home" href="/">
+          <img class="w-10 inline" src="/apple-icon.png" />
+          <h1 class="inline font-bold text-blue-950 dark:text-white">DevShortcut</h1>
+        </a>
 
         <ul class="flex gap-4 items-center">
             

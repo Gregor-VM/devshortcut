@@ -66,7 +66,7 @@ export function Examples({showExamples}: Props) {
                 cursor-pointer"
                 >
                     <h2 class="text-xl">{example.title}</h2>
-                    <div class="flex justify-around gap-5 w-full border-t-2 border-neutral-700">
+                    <div class="flex justify-around md:gap-5 w-full border-t-2 border-neutral-700">
                         <BookmarkBtn class="p-3" example={example} />
 
                         <button class="p-3" onClick={(e) => shareUrl(e, example)} title="Share" >

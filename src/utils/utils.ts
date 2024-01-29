@@ -135,7 +135,9 @@ export const getPadding = (item: ExampleData, start = 1.5 ): number => {
 export enum FileType {
     UNKNOWN,
     IMAGE,
-    TEXT
+    TEXT,
+    AUDIO,
+    VIDEO,
 }
 
 /**
@@ -154,10 +156,49 @@ export const getFileType = (filename?: string): {fileType: FileType, fileExtensi
     let extension = filename.split("").splice(dotIndex + 1).join("").toLocaleLowerCase();
 
     const imagesExtensions = ["jpg", "jpeg", "png", "ico", "gif", "svg", "webp", "avif", "apng"];
+    const audioExtensions = ["m4a", "flac", "mp3", "wav", "wma", "ogg", "acc"];
+    const videoExtensions = ["mp4", "webm", "3gp", "mpeg", "quicktime"];
+
+    // Avoid showing these files
+    const unknownExtensions = [
+        'doc',
+        'docx',
+        'odt',
+        'rtf',
+        'pdf',
+
+        'xls',
+        'xlsx',
+        'ods',
+
+        'ppt',
+        'pptx',
+        'odp',
+
+        'zip',
+        'tar',
+        'gz',
+        'rar',
+
+        'exe',
+        'msi',
+    ];
 
     if(imagesExtensions.includes(extension)){
         if(extension === "svg") extension = "svg+xml";
         return {fileType: FileType.IMAGE, fileExtension: extension};
+    }
+
+    if(audioExtensions.includes(extension)){
+        return {fileType: FileType.AUDIO, fileExtension: extension};
+    }
+
+    if(videoExtensions.includes(extension)){
+        return {fileType: FileType.VIDEO, fileExtension: extension};
+    }
+
+    if(unknownExtensions.includes(extension)){
+        return {fileType: FileType.UNKNOWN, fileExtension: extension};
     }
 
     return {fileType: FileType.TEXT, fileExtension: extension};
