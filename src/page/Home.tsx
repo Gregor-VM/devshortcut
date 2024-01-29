@@ -8,6 +8,7 @@ import NotFound from "../components/NotFound";
 import { route } from "preact-router";
 import { GithubExample, getRepoNameFromUrl } from "../utils/utils";
 import { InputEvent } from "../types/ClickEvent";
+import Navbar from "../components/Navbar";
 
 
 export default function Home() {
@@ -38,29 +39,32 @@ export default function Home() {
 
 
   return (
-    <main class="mx-6 lg:mx-56 my-12">
+    <>
+      <Navbar />
+      <main class="mx-6 lg:mx-56 my-12">
 
-      <section>
+        <section>
 
-        <input class="p-4 w-full rounded 
-        dark:bg-neutral-800 shadow-2xl 
-        outline-none
-        ring-purple-700
-        hover:shadow-xl
-        focus:shadow-lg
-        focus:ring-2
-        transition-all" onInput={onInput} value={state.search} placeholder="Search an example or paste github repo..." />
+          <input class="p-4 w-full rounded 
+          dark:bg-neutral-800 shadow-2xl 
+          outline-none
+          ring-purple-700
+          hover:shadow-xl
+          focus:shadow-lg
+          focus:ring-2
+          transition-all" onInput={onInput} value={state.search} placeholder="Search an example or paste github repo..." />
 
-        <FilterBadges />
+          <FilterBadges />
 
-        {isSearching?.value && examplesLength === 0 && (<NotFound />)}
+          {isSearching?.value && examplesLength === 0 && (<NotFound />)}
 
-        {isSearching?.value && examplesLength > 0 && <Examples />}
+          {isSearching?.value && examplesLength > 0 && <Examples />}
 
-        {(examplesLength === 0 && !isSearching?.value) && <FilterSection />}
+          {(examplesLength === 0 && !isSearching?.value) && <FilterSection />}
 
-      </section>
+        </section>
 
-    </main>
+      </main>
+    </>
   )
 }

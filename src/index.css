@@ -33,7 +33,7 @@
 }
 
 .example-view{
-  height: calc(100vh - 9rem);
+  height: calc(100vh - 3.15rem);
 }
 
 #modals .modal-container{
@@ -71,6 +71,29 @@
   100%{
     transform: rotateY(0deg);
   }
+}
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: .75rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(39, 39, 39);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(55, 55, 55);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(71, 71, 71);
 }
 
 /*

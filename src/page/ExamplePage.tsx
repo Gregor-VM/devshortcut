@@ -11,6 +11,8 @@ import ExampleTab from "../components/ExampleTab";
 import BookmarkBtn from "../components/BookmarkBtn";
 import GitHubIcon from "../icons/github";
 import HoverEffect from "../components/HoverEffect";
+import BackIcon from "../icons/back";
+import ThemeButton from "../components/ThemeButton";
 
 interface Props {
   title: string
@@ -36,6 +38,10 @@ export default function ExamplePage({title}: Props) {
       return null;
     }
 
+  }
+
+  const goBack = () => {
+    history.go(-1);
   }
 
   useEffect(() => {
@@ -64,24 +70,33 @@ export default function ExamplePage({title}: Props) {
 
 
   return (
-    <section class="mx-6 lg:mx-4 mt-2 max-h-screen">
+    <section class="h-screen max-h-screen">
 
         <div>
 
 
-          <div class="flex justify-between">
+          <div class="flex justify-between items-end">
           
-            <nav class="flex gap-1 items-end">
+            <nav class="flex w-full gap-1 p-2 border-b-2 border-neutral-500/50 items-center">
+
+              <span title="Go Back" 
+              onClick={goBack}
+              class="block w-6 h-8 hover:bg-neutral-500/50 rounded cursor-pointer">
+                <BackIcon />
+              </span>
+
               {selectedExample?.tabs?.map(tab => {
                 return <ExampleTab tab={tab} />
               })}
             </nav>
 
-            <span class="flex items-center mr-3 gap-2">
-
+            <span class="flex p-1 items-center pr-3 gap-3 border-b-2 border-neutral-500/50">
+              
               {showGithubRepo()}
 
-              <BookmarkBtn example={selectedExample as Example} />
+              <BookmarkBtn class="mt-1" example={selectedExample as Example} />
+
+              <ThemeButton />
 
             </span>
 
@@ -89,10 +104,9 @@ export default function ExamplePage({title}: Props) {
           
 
             
-          <div class="w-full example-view flex justify-start md:flex-row flex-col
-          border-4 border-purple-500 rounded-b rounded-tr shadow">
+          <div class="w-full example-view flex justify-start md:flex-row flex-col shadow">
 
-            <div class="min-w-60 min-h-60 max-h-screen overflow-auto no-scrollbar dark:bg-neutral-800 bg-slate-300/50">
+            <div class="w-56 min-w-56 max-h-screen overflow-y-auto overflow-x-hidden no-scrollbar dark:bg-neutral-800 bg-slate-300/50">
 
               {structureLoading && <StructureSkeleton />}
 

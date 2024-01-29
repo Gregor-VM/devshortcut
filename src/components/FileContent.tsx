@@ -100,13 +100,26 @@ export default function FileContent() {
 
     const copyContent = async () => {
 
-        /*const clipboard = new Clipboard();
+        if(content){
+            var textArea = document.createElement("textarea");
+            textArea.value = content;
+            
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
 
-        if(typeof content === "string"){
-            await clipboard.writeText(content);
-        }*/
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
 
-        //TODO: COPY TEXT AND DISPLAY NOTIFICATION
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error(err);
+            }
+
+            document.body.removeChild(textArea);
+        }
 
         copyAnimation();
 
@@ -139,7 +152,7 @@ export default function FileContent() {
         <span 
             ref={copyBtnRef}
             onClick={copyContent}
-            class="w-6 h-6 block absolute top-96 md:top-36 right-12 z-10 cursor-pointer"
+            class="w-6 h-6 block absolute top-96 md:top-14 right-6 z-10 cursor-pointer"
         >{ showCopyBtn ? <CopyIcon /> : <CheckIcon /> }</span>
 
         <pre class="p-5 relative">
@@ -177,5 +190,7 @@ export default function FileContent() {
         </h5>
     </div>
     }
+
+    return null;
 
 }

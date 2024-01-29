@@ -10,7 +10,7 @@ import { ButtonEvent } from '../types/ClickEvent'
 
 interface Props{
     example: Example,
-    class: string
+    class?: string
 }
 
 function BookmarkBtn({example, class: className}: Props) {
