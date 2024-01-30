@@ -15,6 +15,7 @@ const initialState = {} as {
     selectedFile: Signal<ExampleData | null>;
     activeTab: Signal<Tab | null>;
     bookmarks: Signal<Example[] | null>;
+    openedMenu: Signal<string | null>;
 }
 
 export const AppState = createContext(initialState);
@@ -27,6 +28,7 @@ export function createAppState() {
     const selectedFile = signal(null);
     const activeTab = signal(null);
     const bookmarks = signal(null);
+    const openedMenu = signal(null);
   
     const toString = computed(() => {
       return JSON.stringify({search, filters, examples});
@@ -36,5 +38,5 @@ export function createAppState() {
       return (search.value.length > 0 || filters.value.length > 0)
     });
   
-    return { search, filters, toString, examples, isSearching, selectedExample, selectedFile, activeTab, bookmarks }
+    return { search, filters, toString, examples, isSearching, selectedExample, selectedFile, activeTab, bookmarks, openedMenu }
 }

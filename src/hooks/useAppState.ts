@@ -3,6 +3,7 @@ import { AppState } from "../state/appState";
 import { Tab } from "../utils/utils";
 import { Example } from "../examples/examples";
 import { ExampleData } from "../types/ExampleResponse";
+import { MenuData } from "../components/ContextMenu";
 
 
 export default function useAppState() {
@@ -31,6 +32,10 @@ export default function useAppState() {
     state.selectedFile.value = selectedFile
   }
 
+  const setOpenedMenu = (data: string | null) => {
+    state.openedMenu.value = data;
+  }
+
 
 
   return ({
@@ -38,8 +43,10 @@ export default function useAppState() {
     selectedExample: selectedExampleMemo,
     selectedFile: state.selectedFile?.value,
     bookmarks: state.bookmarks?.value,
+    openedMenu: state.openedMenu?.value,
     setActiveTab,
     setSelectedExample,
     setSelectedFile,
+    setOpenedMenu,
   });
 }
