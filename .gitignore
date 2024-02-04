@@ -23,6 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 
-vercel.json
-
 vite.config.ts.timestamp*
