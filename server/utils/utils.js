@@ -17,7 +17,12 @@ const __dirname = new URL('../', import.meta.url).pathname.replace("/", "");
  */
 export const getPath = async (dir) => {
   
-    return path.join(__dirname, `../src/examples/${dir}`);
+    const fullPath = path.join(__dirname, `../src/examples/${dir}`);
+    if(!fullPath.includes('src\\examples\\')){
+      throw new Error({code: 500});
+    }
+    console.log(fullPath);
+    return fullPath;
   
 }
 
@@ -66,13 +71,11 @@ export const getStructure = async (path, parent, type = "local") => {
  */
 export const getFileContent = async (path) => {
 
-    if(path.includes("..")) throw new Error({code: 500});
-
     const fullPath = await getPath(path);
 
     try {
         const content = await fs.readFile(fullPath);
-        return JSON.stringify(content);
+        return content;
     } catch (error) {
         throw new Error({msg: "File not found", code: 404});
     }
@@ -85,7 +88,7 @@ export const getFileContent = async (path) => {
  * Get file content from GitHub
  * @param {string} repoUrl - The github repository
  * * @param {string} filePath - The path of the file in local
- * @returns {Promise<Buffer>} - The content of the file
+ * @returns {Promise<Buffer | string>} - The content of the file
  */
 export const getGitHubFile = async (repoUrl, filePath) => {
 
@@ -99,8 +102,7 @@ export const getGitHubFile = async (repoUrl, filePath) => {
     try {
         const res = await axios.get(`https://raw.githubusercontent.com/${repoPath}/main/${fileRepoPath}`, {responseType: 'arraybuffer'});
         const buffer = Buffer.from(res.data, 'binary');
-        return JSON.stringify(buffer);
-
+        return buffer;
     } catch (error) {
         throw new Error({msg: "File not found", code: 404});
     }

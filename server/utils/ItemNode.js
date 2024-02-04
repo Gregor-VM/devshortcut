@@ -21,6 +21,7 @@ export class ItemNode {
         await this.getItemNodePath();
         await this.shouldBeMarkAsDirectory();
         this.setFileContent();
+        if(!this.isDirectory) this.setDownloadUrl();
 
     }
 
@@ -42,6 +43,18 @@ export class ItemNode {
 
         if(this.type === "github") {
             this.fileContent = `/github/file?filePath=${this.path}&repoUrl=`;
+        }
+
+    }
+
+    setDownloadUrl(){
+
+        if(this.type === "local") {
+            this.downloadUrl = `/download/example?path=${this.path}`;
+        }
+
+        if(this.type === "github") {
+            this.downloadUrl = `/download/github?filePath=${this.path}&repoUrl=`;
         }
 
     }

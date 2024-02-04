@@ -13,4 +13,5 @@ export interface ExampleData {
     itemPath: string
     isDirectory: boolean
     fileContent: string
+    downloadUrl: string
 }

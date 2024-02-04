@@ -146,6 +146,16 @@ export default function FileContent() {
 
     // TODO: ADD LINE NUMERATION
 
+    if(contentType === FileType.TEXT && content.length > 500000){
+      
+        return <div class="md:p-20 p-5 h-full grid content-center">
+      <h5 class="text-center"> This file is too large to be displayed, you may want to download it
+         <a class="text-blue-500 underline ml-1" href={"/api" + selectedFile?.downloadUrl} target="_blank">here</a> instead. 
+      </h5> 
+    </div>
+
+    }
+    
     if(contentType === FileType.TEXT){
         return <>
 
@@ -157,7 +167,7 @@ export default function FileContent() {
 
         <pre class="p-5 relative">
         <code class="text-wrap dark:bg-neutral-900 bg-slate-200 dark:text-white text-black">
-            {content.length < 500000 ? content : 'The file is too large to be displayed, you may want to download it here instead.'}
+            {content}
         </code>
     </pre>
     </>
@@ -186,7 +196,8 @@ export default function FileContent() {
     if(contentType === FileType.UNKNOWN){
         return <div class="md:p-20 p-5 h-full grid content-center">
         <h5 class="text-center">
-            This file type cannot be displayed you may want to download it here instead.
+            This file type cannot be displayed you may want to download it 
+            <a class="text-blue-500 underline ml-1" href={"/api" + selectedFile?.downloadUrl} target="_blank">here</a> instead.
         </h5>
     </div>
     }

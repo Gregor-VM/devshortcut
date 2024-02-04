@@ -106,14 +106,14 @@ export default function ExamplePage({title}: Props) {
             
           <div class="w-full example-view flex justify-start md:flex-row flex-col shadow">
 
-            <div class="w-56 min-w-56 max-h-screen overflow-y-auto overflow-x-hidden no-scrollbar dark:bg-neutral-800 bg-slate-300/50">
-
+            <div class="sm:min-w-56 sm:w-56 sm:h-full w-full h-1/2 sm:max-h-screen overflow-y-auto overflow-x-hidden no-scrollbar dark:bg-neutral-800 bg-slate-300/50">
+              
               {structureLoading && <StructureSkeleton />}
 
               {structure && <ShowStructure structure={structure} />}
 
             </div>
-            <div class="flex-grow max-h-screen overflow-auto
+            <div class="flex-grow sm:h-full h-1/2 max-h-screen overflow-auto
             bg-slate-200 dark:bg-neutral-900">
               <FileContent />
             </div>

@@ -16,6 +16,7 @@
     "compression": "^1.7.4",
     "express": "^4.18.2",
     "highlight.js": "^11.9.0",
+    "mime": "^4.0.1",
     "preact": "^10.19.3",
     "preact-render-to-string": "^6.3.1",
     "preact-router": "^4.1.2",

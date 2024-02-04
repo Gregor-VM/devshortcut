@@ -22,13 +22,20 @@ export const Tag = (name: string, topic: TagType = "library" ) => {
 }
 
 const tags = {
-    redux: Tag("Redux"),
+    react: Tag("React"),
     javascript: Tag("JavaScript", "language"),
+    nodejs: Tag("NodeJS", "language"),
+    java: Tag("Java", "language"),
+    grahql: Tag("GraphQL", "language"),
     typescript: Tag("TypeScript", "language"),
-    dart: Tag("Dart", "language"),
-    flutter: Tag("Flutter", "framework"),
-    react: Tag("React", "framework"),
+    go: Tag("Go", "language"),
+    express: Tag("Express", "framework"),
+    springBoot: Tag("Spring Boot", "framework"),
+    nestjs: Tag("NestJS", "framework"),
+    angular: Tag("Angular", "framework"),
     storeManagament: Tag("Store Managment", "topic"),
+    authentication: Tag("Authentication", "topic"),
+    api: Tag("API", "topic"),
 }
 
 export type Tag = typeof tags[keyof typeof tags]

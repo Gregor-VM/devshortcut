@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { Example } from "../examples/examples";
 import useAppState from "../hooks/useAppState";
 import BookmarkIcon from "../icons/bookmark";
-
+import NotFound from "../components/NotFound";
 
 export default function Bookmarks() {
 
@@ -21,7 +21,8 @@ export default function Bookmarks() {
           <span class="block w-6 h-6"><BookmarkIcon /></span> Bookmarks
         </h5>
 
-        <Examples showExamples={bookmarks as Example[]} />
+        {bookmarks && bookmarks.length > 0 && <Examples showExamples={bookmarks as Example[]} />}
+        {!bookmarks || bookmarks.length === 0 && <NotFound msg="You don't have any bookmarks yet" />}
 
         </section>
 
