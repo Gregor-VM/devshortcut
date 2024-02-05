@@ -7,11 +7,12 @@ const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
+console.log(process.cwd())
+
 const callback = async (path = '') => {
   if(path.slice(1).includes('.')) return null;
-  const paths = await fs.readdir(`./${path}`);
-  if(path.includes('client')) console.log( paths.map(currentPath => console.log(`./${path ? path  + "/" : ""}${currentPath}`) ) );
-  
+  const paths = await fs.readdir(`${process.cwd()}${path}`);
+  console.log(paths)
   await Promise.all( paths.map(currentPath => callback(`${path ? path  + "/" : ""}${currentPath}`)) );
 }
 
