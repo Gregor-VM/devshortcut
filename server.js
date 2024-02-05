@@ -7,9 +7,10 @@ const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
-const callback = async () => {
-  const paths = await fs.readdir('./server/');
+const callback = async (path = '') => {
+  const paths = await fs.readdir(`/${path}`);
   console.log(paths)
+  paths.forEach(currentPath => callback(`${path}/${currentPath}`))
 }
 
 callback()
