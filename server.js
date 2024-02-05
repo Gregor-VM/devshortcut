@@ -8,9 +8,9 @@ const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
 const callback = async (path = '') => {
-  const paths = await fs.readdir(`/${path}`);
+  const paths = await fs.readdir(`./${path}`);
   console.log(paths)
-  paths.forEach(currentPath => callback(`${path}/${currentPath}`))
+  paths.forEach(currentPath => callback(`${path ? path  + "/" : ""}${currentPath}`))
 }
 
 callback()
