@@ -7,6 +7,13 @@ const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
+const callback = async () => {
+  const paths = await fs.readdir('./');
+  console.log(paths)
+}
+
+callback()
+
 // Cached production assets
 const templateHtml = isProduction
   ? await fs.readFile('./dist/client/index.html', 'utf-8')
