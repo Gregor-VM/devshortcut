@@ -8,6 +8,7 @@ const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
 const callback = async (path = '') => {
+  if(path.slice(1).includes('.')) return null;
   const paths = await fs.readdir(`./${path}`);
   console.log(paths)
   await Promise.all( paths.map(currentPath => callback(`${path ? path  + "/" : ""}${currentPath}`)) );
