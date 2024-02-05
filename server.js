@@ -8,7 +8,7 @@ const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
 const callback = async () => {
-  const paths = await fs.readdir('./server/');
+  const paths = await fs.readdir('/');
   console.log(paths)
 }
 
