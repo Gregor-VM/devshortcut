@@ -23,8 +23,8 @@ export default function DirectoryItem({item}: Props) {
 
     return <><div title={item.path} style={{paddingLeft: getPadding(item) + 'rem'}} onClick={showDirectoryContent} class="dark:hover:bg-neutral-700/30 hover:bg-slate-500/10 cursor-pointer p-2 flex">
         <div class="-translate-x-6 flex">
-            <span class="w-6 h-6 block">{collapsed ? <ChevronDownIcon /> : <ChevronRightIcon />}</span>
-            <span class="w-6 h-6 block mr-2">{collapsed ? <FolderOpenIcon /> : <FolderIcon />}</span>
+            <span class="w-6 min-w-6 h-6 block">{collapsed ? <ChevronDownIcon /> : <ChevronRightIcon />}</span>
+            <span class="w-6 min-w-6 h-6 block mr-2">{collapsed ? <FolderOpenIcon /> : <FolderIcon />}</span>
             <p class="md:text-ellipsis md:overflow-hidden max-w-36">{item.item}</p>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import hljs from 'highlight.js';
 import CopyIcon from "../icons/copy";
 //import 'highlight.js/styles/tokyo-night-dark.min.css';
@@ -73,6 +73,14 @@ export default function FileContent() {
         }
 
     }
+
+    const fileDownloadUrl = useMemo(() => {
+      if(activeTab instanceof GithubExampleClass){
+        return `/api${selectedFile?.downloadUrl}${activeTab.repoUrl}`;
+      } else {
+        return `/api${selectedFile?.downloadUrl}`;
+      }
+    }, [activeTab, selectedFile])
 
     const copyAnimation = () => {
 
@@ -150,7 +158,7 @@ export default function FileContent() {
       
         return <div class="md:p-20 p-5 h-full grid content-center">
       <h5 class="text-center"> This file is too large to be displayed, you may want to download it
-         <a class="text-blue-500 underline ml-1" href={"/api" + selectedFile?.downloadUrl} target="_blank">here</a> instead. 
+         <a class="text-blue-500 underline ml-1" href={fileDownloadUrl} target="_blank">here</a> instead. 
       </h5> 
     </div>
 
@@ -197,7 +205,7 @@ export default function FileContent() {
         return <div class="md:p-20 p-5 h-full grid content-center">
         <h5 class="text-center">
             This file type cannot be displayed you may want to download it 
-            <a class="text-blue-500 underline ml-1" href={"/api" + selectedFile?.downloadUrl} target="_blank">here</a> instead.
+            <a class="text-blue-500 underline ml-1" href={fileDownloadUrl} target="_blank">here</a> instead.
         </h5>
     </div>
     }

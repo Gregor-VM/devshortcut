@@ -1,9 +1,5 @@
 import tags from "../utils/tags";
-import { GithubExample, LocalExample } from "../utils/utils";
-
-const customTags = {
-
-}
+import { GithubExample } from "../utils/utils";
 
 // Note: Each title will be unique
 

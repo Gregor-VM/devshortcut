@@ -1,5 +1,5 @@
 import { useEffect } from "preact/hooks"
-import examples, { Example } from "../examples/examples";
+import examples, { Example } from "../utils/examples";
 import { GithubExampleClass, convertToExample, convertToSlug } from "../utils/utils";
 import useFetchExamples from "../hooks/useFetchExample";
 import FileContent from "../components/FileContent";

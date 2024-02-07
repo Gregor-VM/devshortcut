@@ -4,6 +4,14 @@ import preact from '@preact/preset-vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server:{
+    watch: {
+      ignored: ['**/src/examples/**'],
+    }
+  },
+  optimizeDeps: {
+    exclude: ['src/examples', 'src/examples/*']
+  },
   plugins: [
     preact({
       babel: {

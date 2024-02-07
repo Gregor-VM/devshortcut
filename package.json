@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "node server",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "vite build --ssrManifest --outDir dist/dist/client",
-    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/dist/server",
+    "build:client": "vite build --ssrManifest --outDir dist/client",
+    "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
     "preview": "cross-env NODE_ENV=production node server"
   },
   "dependencies": {
@@ -16,11 +16,11 @@
     "compression": "^1.7.4",
     "express": "^4.18.2",
     "highlight.js": "^11.9.0",
+    "isomorphic-git": "^1.25.3",
     "mime": "^4.0.1",
     "preact": "^10.19.3",
     "preact-render-to-string": "^6.3.1",
     "preact-router": "^4.1.2",
-    "simple-git": "^3.22.0",
     "sirv": "^2.0.4",
     "uuid": "^9.0.1"
   },

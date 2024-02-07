@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "preact/hooks"
 import { AppState } from "../state/appState";
-import examples from "../examples/examples";
+import examples from "../utils/examples";
 import { filterBySearch, filterByTags } from "../utils/utils";
 
 

@@ -3,7 +3,7 @@ import path from "path";
 import mime from "mime";
 import fs from "fs";
 import stream from "stream";
-import { getGitHubRepo, getFileContent, getStructure, getGitHubFile } from "./utils/utils.js";
+import { getGitHubRepo, getFileContent, getStructure, getGitHubFile, getBranchCookie } from "./utils/utils.js";
 
 const router = Router();
 
@@ -70,9 +70,10 @@ router.get("/api/github/file", async (req, res) => {
 
     const repoUrl = req.query.repoUrl;
     const filePath = req.query.filePath;
+    const branch = getBranchCookie(req);
 
     try {
-        const fileContent = await getGitHubFile(repoUrl, filePath);
+        const fileContent = await getGitHubFile(repoUrl, filePath, branch);
         res.json({content: JSON.stringify(fileContent)});
     } catch (error) {
         console.error(error);
@@ -87,6 +88,7 @@ router.get("/api/download/github", async (req, res) => {
 
     const repoUrl = req.query.repoUrl;
     const filePath = req.query.filePath;
+    const branch = getBranchCookie(req);
 
     const filename = path.basename(filePath);
     const mimeType = mime.getType(filePath);
@@ -97,7 +99,7 @@ router.get("/api/download/github", async (req, res) => {
     res.setHeader('Content-type', mimeType);
 
     try {
-        const fileContent = await getGitHubFile(repoUrl, filePath);
+        const fileContent = await getGitHubFile(repoUrl, filePath, branch);
         readStream.end(fileContent);
         readStream.pipe(res);
     } catch (error) {
@@ -114,7 +116,8 @@ router.get("/api/github", async (req, res) => {
     const repoUrl = req.query.repoUrl;
 
     try {
-        const structure = await getGitHubRepo(repoUrl);
+        const {structure, branch} = await getGitHubRepo(repoUrl);
+        res.cookie('branch', branch, {maxAge: 900000, httpOnly: true});
         res.json({structure});
     } catch (error) {
         console.error(error);

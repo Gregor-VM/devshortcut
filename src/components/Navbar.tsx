@@ -25,7 +25,7 @@ export default function Navbar() {
             </a>
             
             <HoverEffect>
-                <a title="See on github" href="https://github.com/Gregor-VM/devshortcut" class="w-6 h-6 block"><GitHubIcon /></a>
+                <a title="See on github" href="https://github.com/Gregor-VM/devshortcut" target="_blank" class="w-6 h-6 block"><GitHubIcon /></a>
             </HoverEffect>
 
             <ThemeButton />

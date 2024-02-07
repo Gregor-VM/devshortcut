@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import { getPath, getStructure } from "./utils.js";
+import { getPath, getStructure, getTempPath } from "./utils.js";
 
 export class ItemNode {
 
@@ -26,7 +26,8 @@ export class ItemNode {
     }
 
     async getItemNodePath(){
-        this.itemPath = await getPath(this.path);
+        if(this.type === 'local') this.itemPath = await getPath(this.path);
+        if(this.type === 'github') this.itemPath = await getTempPath(this.path);
     }
 
     async shouldBeMarkAsDirectory(){

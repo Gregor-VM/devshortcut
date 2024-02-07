@@ -112,7 +112,7 @@ export default function FileItem({item}: Props) {
     onContextMenu={handleMenu}
     class={` ${isSelected ? 'dark:bg-neutral-700 bg-slate-300/80' : ''}
     dark:hover:bg-neutral-700/30 hover:bg-slate-500/10 p-2 flex cursor-pointer`}>
-        <span class="w-6 h-6 block mr-2">{fileIcon}</span>
+        <span class="w-6 min-w-6 h-6 block mr-2">{fileIcon}</span>
         <p class="md:text-ellipsis md:overflow-hidden max-w-36">{item.item}</p>
     </div>
 

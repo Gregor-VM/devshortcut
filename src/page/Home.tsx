@@ -32,6 +32,7 @@ export default function Home() {
       });
       state.selectedExample.value = (exampleData);
       sessionStorage.setItem(repoName, JSON.stringify(exampleData));
+      if(state.search) state.search.value = "";
       route(`example/${repoName}`);
     }
 

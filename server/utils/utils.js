@@ -1,14 +1,12 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { simpleGit } from 'simple-git';
+import fsSync from 'node:fs';
+import * as git from 'isomorphic-git';
+import * as http from 'isomorphic-git/http/node/index.js';
 import { v4 as uuidv4 } from 'uuid';
 
-import { URL } from 'url';
 import { ItemNode } from './ItemNode.js';
 import axios from 'axios';
-
-const __dirname = new URL('../', import.meta.url).pathname.replace("/", "");
-
 
 /**
  * Get current path to example folders
@@ -17,11 +15,22 @@ const __dirname = new URL('../', import.meta.url).pathname.replace("/", "");
  */
 export const getPath = async (dir) => {
   
-    const fullPath = path.join(__dirname, `../src/examples/${dir}`);
-    if(!fullPath.includes('src\\examples\\')){
+    const fullPath = path.join(process.cwd(), `/src/examples/${dir}`);
+    if(!fullPath.startsWith(path.join(process.cwd(), '/src/examples/'))){
       throw new Error({code: 500});
     }
-    console.log(fullPath);
+    return fullPath;
+  
+}
+
+/**
+ * Get path to temporary folder
+ * @param {string} dir - The name of the directory or the path relative to the temporary directory
+ * @returns {Promise<string>} - A promise that resolves to the full path to the folder
+ */
+export const getTempPath = async (dir) => {
+    const isProduction = process.env.NODE_ENV === 'production'
+    const fullPath = isProduction ? path.join(`/tmp/${dir}`) : path.join(process.cwd(), `/src/examples/${dir}`);
     return fullPath;
   
 }
@@ -34,7 +43,7 @@ export const getPath = async (dir) => {
  */
 export const getStructure = async (path, parent, type = "local") => {
 
-    const fullPath = await getPath(`${path}`);
+    const fullPath = type === "local" ? await getPath(path) : await getTempPath(path);
   
     const items = await fs.readdir(fullPath);
 
@@ -90,7 +99,7 @@ export const getFileContent = async (path) => {
  * * @param {string} filePath - The path of the file in local
  * @returns {Promise<Buffer | string>} - The content of the file
  */
-export const getGitHubFile = async (repoUrl, filePath) => {
+export const getGitHubFile = async (repoUrl, filePath, branch = "main") => {
 
     let repoPath = repoUrl.replace("https://github.com/", "");
     repoPath = repoPath.split("/")[0] + "/" + repoPath.split("/")[1];
@@ -100,10 +109,11 @@ export const getGitHubFile = async (repoUrl, filePath) => {
     const fileRepoPath = filePath.slice(slash + 1);
 
     try {
-        const res = await axios.get(`https://raw.githubusercontent.com/${repoPath}/main/${fileRepoPath}`, {responseType: 'arraybuffer'});
+        const res = await axios.get(`https://raw.githubusercontent.com/${repoPath}/${branch}/${fileRepoPath}`, {responseType: 'arraybuffer'});
         const buffer = Buffer.from(res.data, 'binary');
         return buffer;
     } catch (error) {
+        //console.error(error);
         throw new Error({msg: "File not found", code: 404});
     }
 
@@ -119,28 +129,36 @@ export const getGitHubFile = async (repoUrl, filePath) => {
  */
 export const getGitHubRepo = async (repoUrl) => {
 
-    const git = simpleGit();
-
     const id = uuidv4();
+
+    let tmpPath = null;
 
     try {
 
-        const path = await getPath(id);
-        
-        await git.clone(repoUrl, path);
+        tmpPath = await getTempPath(id);
 
-        await fs.rm(await getPath(id + '/.git'), {recursive: true});
+        await git.clone({fs: fsSync, http, dir: tmpPath, url: repoUrl});
+
+        const head = await fs.readFile(await getTempPath(id + '/.git/HEAD'), {encoding: 'utf8'});
+        const branch = head.replace("ref: refs/heads/", "").split("%")[0];
+
+        await fs.rm(await getTempPath(id + '/.git'), {recursive: true});
 
         const content = await getStructure(id, undefined, "github");
 
-        await fs.rm(path, {recursive: true});
+        await fs.rm(tmpPath, {recursive: true});
 
-        return JSON.parse(JSON.stringify(content));
+        return ({structure: JSON.parse(JSON.stringify(content)), branch});
 
 
     } catch (error) {
-        await fs.rm(path, {recursive: true});
+        console.error(error)
+        await fs.rm(tmpPath, {recursive: true});
         throw new Error({msg: "Error while cloning the github repo", code: 400});
     }
 
+}
+
+export const getBranchCookie = (req) => {
+  return req.headers.cookie.split('; ').filter(cookie => cookie.includes("branch"))[0].split("=")[1].split("%")[0];
 }
