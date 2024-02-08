@@ -1,5 +1,4 @@
 import { useEffect } from "preact/hooks";
-import CopyIcon from "../icons/copy";
 import CloseIcon from "../icons/close";
 
 

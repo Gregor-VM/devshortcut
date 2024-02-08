@@ -10,6 +10,7 @@ export default function useFetchExamples() {
 
   const [structure, setStructure] = useState<ExampleData[]>();
   const [structureLoading, setStructureLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const state = useContext(AppState);
 
@@ -19,23 +20,15 @@ export default function useFetchExamples() {
 
     setStructureLoading(true);
     setStructure(undefined);
-
-    if(activeTab instanceof LocalExampleClass){
-
-      const data: ExampleResponse = (await axios.get(`/examples/${selectedExample!.folder}/${activeTab.folder}`)).data;
+    
+    try {        
+      const data: ExampleResponse = (await axios.get(state.fetchExampleUrl.value)).data;
       if(data.structure){
         setStructure(data.structure);
       }
       setSelectedFile(null);
-
-    } else {
-
-      const data: ExampleResponse = (await axios.get(`/github?repoUrl=${activeTab?.repoUrl}`)).data;
-      if(data.structure){
-        setStructure(data.structure);
-      }
-      setSelectedFile(null);
-
+    } catch (e) {
+      setIsError(true);
     }
 
     setStructureLoading(false);
@@ -76,5 +69,6 @@ export default function useFetchExamples() {
     activeTab: state.activeTab,
     selectedExample: state.selectedExample,
     structureLoading,
+    isError
   });
 }

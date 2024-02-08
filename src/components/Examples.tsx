@@ -1,7 +1,7 @@
 import { useContext, useState } from "preact/hooks";
 import { createPortal } from 'preact/compat';
 import { AppState } from "../state/appState";
-import { Example } from "../examples/examples";
+import { Example } from "../utils/examples";
 import { convertToSlug } from "../utils/utils";
 import BookmarkBtn from "./BookmarkBtn";
 import HoverEffect from "./HoverEffect";

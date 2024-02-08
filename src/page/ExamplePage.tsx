@@ -1,4 +1,5 @@
-import { useEffect } from "preact/hooks"
+import { useEffect, useState } from "preact/hooks"
+import { createPortal } from 'preact/compat';
 import examples, { Example } from "../utils/examples";
 import { GithubExampleClass, convertToExample, convertToSlug } from "../utils/utils";
 import useFetchExamples from "../hooks/useFetchExample";
@@ -13,6 +14,7 @@ import GitHubIcon from "../icons/github";
 import HoverEffect from "../components/HoverEffect";
 import BackIcon from "../icons/back";
 import ThemeButton from "../components/ThemeButton";
+import ErrorModal from "../components/ErrorModal";
 
 interface Props {
   title: string
@@ -20,9 +22,13 @@ interface Props {
 
 export default function ExamplePage({title}: Props) {
 
+  const [showModal, setShowModal] = useState(false);
+
+  const container = document.getElementById('modals')!;
+
   const {activeTab, selectedExample, setSelectedExample} = useAppState();
 
-  const {structure, structureLoading} = useFetchExamples();
+  const {structure, structureLoading, isError} = useFetchExamples();
 
   const showGithubRepo = () => {
 
@@ -43,6 +49,15 @@ export default function ExamplePage({title}: Props) {
   const goBack = () => {
     history.go(-1);
   }
+
+  const closeModal = () => {
+    setShowModal(false);
+    goBack();
+  }
+
+  useEffect(() => {
+    if(isError) setShowModal(true); 
+  }, [isError]); 
 
   useEffect(() => {
 
@@ -68,6 +83,9 @@ export default function ExamplePage({title}: Props) {
     
   }, [selectedExample?.title]);
 
+  useEffect(() => {
+    
+  }, [isError])
 
   return (
     <section class="h-screen max-h-screen">
@@ -121,6 +139,7 @@ export default function ExamplePage({title}: Props) {
           </div>
 
         </div>
+{createPortal(<ErrorModal closeModal={closeModal} show={showModal} message={"We couldn't load the repository, maybe it's private or too large?"} />, container)}
 
     </section>
   )
