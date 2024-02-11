@@ -23,8 +23,8 @@ interface Props {
 export default function ExamplePage({title}: Props) {
 
   const [showModal, setShowModal] = useState(false);
+  const [container, setContainer] = useState<HTMLElement | null>(null);
 
-  const container = document.getElementById('modals')!;
 
   const {activeTab, selectedExample, setSelectedExample} = useAppState();
 
@@ -56,6 +56,7 @@ export default function ExamplePage({title}: Props) {
   }
 
   useEffect(() => {
+    console.log({isError})
     if(isError) setShowModal(true); 
   }, [isError]); 
 
@@ -84,8 +85,8 @@ export default function ExamplePage({title}: Props) {
   }, [selectedExample?.title]);
 
   useEffect(() => {
-    
-  }, [isError])
+    setContainer(document.getElementById('modals')!);
+  }, []);
 
   return (
     <section class="h-screen max-h-screen">
@@ -139,7 +140,7 @@ export default function ExamplePage({title}: Props) {
           </div>
 
         </div>
-{createPortal(<ErrorModal closeModal={closeModal} show={showModal} message={"We couldn't load the repository, maybe it's private or too large?"} />, container)}
+{container && createPortal(<ErrorModal closeModal={closeModal} show={showModal} message={"We couldn't load the repository, maybe it's private or too large?"} />, container)}
 
     </section>
   )
